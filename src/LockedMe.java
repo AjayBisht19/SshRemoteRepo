@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -60,7 +60,8 @@ public class LockedMe {
                 File theDir = new File(path);
 
                 if (!theDir.exists()){
-                   theDir.mkdir();
+                   boolean b=theDir.mkdir();
+                   if (b)
                    System.out.println("Directory created");
                 }
                 System.out.println("Data has been written successfully..");
@@ -121,7 +122,7 @@ public class LockedMe {
         File theDir = new File(path);
 
         System.out.println("1 . List all stored credentials ");
-        System.out.println("2 . Add, Delete or Search a credential ");
+        System.out.println("2 . Add, Search/Read or Delete a credential ");
         System.out.println("3 . Exit Application");
         int option = input.nextInt();
         switch(option){
@@ -165,7 +166,8 @@ public class LockedMe {
                         readCred(userName);
                         break;
                 case 3:
-
+                        deleteCred(userName);
+                        break;
                 case 4:
                     lockerOptions(userName);
                     break;
@@ -178,7 +180,32 @@ public class LockedMe {
 
     }
 
+    // delete a Credential of a user
+    private static void deleteCred(String userName) {
+        File fileDir = new File("database\\"+userName);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the name of credential you want to delete--");
+        String search = sc.next();
+        search=search+".txt";
+        boolean found = false;
+        if (fileDir.isDirectory()) {
+            for (String p : Objects.requireNonNull(fileDir.list())) {
+                if (p.equals(search)) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if(found){
+        File fileDelete = new File("database\\"+userName+"\\"+search);
+        fileDelete.delete();
+            System.out.println("Credential "+search +" deleted" );
+        }
+        if (!found) {
+            System.out.println("This credential is not present in the directory");
+        }
 
+    }
 
 
     //create user credential file
@@ -192,13 +219,13 @@ public class LockedMe {
             String path = "database\\"+userName+"\\"+input+".txt";
             File theDir = new File(path);
             //File file = new File("database\\"+userName+"\\"+input+".txt");
-            FileWriter fileWriter = null;
+            FileWriter fileWriter;
 
             boolean flag = theDir.createNewFile();
             if (flag) {
 
                 System.out.println("Credential file generated");
-
+                System.out.println();
                 System.out.println("Enter username of credential");
                 String credUserName= sc.next();
                 System.out.println("Enter password of your credential");
@@ -234,9 +261,9 @@ public class LockedMe {
                         File filRead = new File("database\\"+userName+"\\"+search);
                         try{
                             Scanner scannerReader = new Scanner(filRead);
-                                System.out.println(scannerReader.nextLine());
-                                System.out.println("Username -"+scannerReader.nextLine());
-                                System.out.println("Password -"+scannerReader.nextLine());
+
+                                System.out.println("Username - "+scannerReader.nextLine());
+                                System.out.println("Password - "+scannerReader.nextLine());
 
                         }catch (FileNotFoundException e){
                             e.printStackTrace();
