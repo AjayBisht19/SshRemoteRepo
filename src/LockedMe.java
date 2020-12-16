@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class LockedMe {
@@ -144,25 +145,29 @@ public class LockedMe {
 
         int option2;
         do{
+            System.out.println();
+            System.out.println();
             System.out.println("****************************************************************");
-            System.out.println("  1. Create a file ");
-            System.out.println("  2. Search a file");
+            System.out.println("  1. Create a credential file ");
+            System.out.println("  2. Search/Read a credential file");
             System.out.println("  3. Delete a file");
             System.out.println("  4. Go to the main menu");
             System.out.println("****************************************************************");
-
+            System.out.println();
             System.out.println("------------Enter a valid input------------");
             option2 =sc.nextInt();
 
             switch (option2){
                 case 1:
-                        createFile(userName);break;
-
+                        createFile(userName);
+                        break;
                 case 2:
-
+                        readCred(userName);
+                        break;
                 case 3:
 
                 case 4:
+                    lockerOptions(userName);
                     break;
                 default:
                     System.out.println("***************** Please enter a valid option *****************");
@@ -173,6 +178,10 @@ public class LockedMe {
 
     }
 
+
+
+
+    //create user credential file
     private static void createFile(String userName) {
 
         Scanner sc= new Scanner(System.in);
@@ -209,5 +218,39 @@ public class LockedMe {
         }
     }
 
+    // Search for the credential file and read
+    private static void readCred(String userName) {
+        File fileDir = new File("database\\"+userName);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the name of credential you want to search--");
+        String search = sc.next();
+        search=search+".txt";
+        boolean found = false;
+        if (fileDir.isDirectory()) {
+                for (String p : Objects.requireNonNull(fileDir.list())) {
+                    if (p.equals(search)) {
+                        System.out.println("This credential is present in the directory");
+                        found = true;
+                        File filRead = new File("database\\"+userName+"\\"+search);
+                        try{
+                            Scanner scannerReader = new Scanner(filRead);
+                                System.out.println(scannerReader.nextLine());
+                                System.out.println("Username -"+scannerReader.nextLine());
+                                System.out.println("Password -"+scannerReader.nextLine());
 
+                        }catch (FileNotFoundException e){
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }
+        }
+                if (!found) {
+                    System.out.println("This credential is not present in the directory");
+                }
+
+
+
+    }
 }
