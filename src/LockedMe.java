@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public class LockedMe {
                 registerUser();
                 break;
             case 2 :
-               //loginUser();
+               loginUser();
                 break;
             default :
                 System.out.println("Please select 1 Or 2");
@@ -23,6 +24,8 @@ public class LockedMe {
         }
     }
 
+
+    // register
     public static void registerUser(){
         Scanner input= new Scanner(System.in);
         System.out.println("Enter Username");
@@ -54,7 +57,7 @@ public class LockedMe {
             fileWriter.write(password);
                 String path = "database\\"+userName;
                 File theDir = new File(path);
-                //System.out.println(Arrays.asList(theDir.list()));
+
                 if (!theDir.exists()){
                    theDir.mkdir();
                    System.out.println("Directory created");
@@ -74,6 +77,50 @@ public class LockedMe {
 
     }
 
+
+    //login
+    public static void loginUser() {
+        Scanner input= new Scanner(System.in);
+        System.out.println("Enter Username");
+        String userName= input.next();
+        System.out.println("Enter password");
+        String password=input.next();
+        File file = new File("users.txt");
+        try{
+        Scanner scannerReader = new Scanner(file);
+            boolean findEmail=false;
+            boolean findPassword=false;
+            while(scannerReader.hasNextLine()) {
+                if(scannerReader.nextLine().equals(userName))
+                {
+                    findEmail=true;
+                    if(scannerReader.nextLine().equals(password)){
+                        findPassword=true;
+                    }
+                }
+            }
+            if (findEmail & findPassword){
+               //lockerOptions(userName);
+            }
+            else if(findEmail & !(findPassword))
+                System.out.println("Password incorrect");
+            else
+                System.out.println("User not found");
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private static void lockerOptions(String userName) {
+        String path = "database\\"+userName;
+        File theDir = new File(path);
+      //  System.out.println(Arrays.asList(theDir.list()));
+        System.out.println("1 . List all stored credentials ");
+        System.out.println("2 . Search credentials ");
+        System.out.println("3 . Delete credentials ");
+    }
 
 
 }
