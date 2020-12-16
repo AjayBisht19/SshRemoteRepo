@@ -100,7 +100,8 @@ public class LockedMe {
                 }
             }
             if (findEmail & findPassword){
-               //lockerOptions(userName);
+                System.out.println("User found");
+               lockerOptions(userName);
             }
             else if(findEmail & !(findPassword))
                 System.out.println("Password incorrect");
@@ -114,12 +115,30 @@ public class LockedMe {
     }
 
     private static void lockerOptions(String userName) {
+        Scanner input= new Scanner(System.in);
         String path = "database\\"+userName;
         File theDir = new File(path);
-      //  System.out.println(Arrays.asList(theDir.list()));
+
         System.out.println("1 . List all stored credentials ");
-        System.out.println("2 . Search credentials ");
-        System.out.println("3 . Delete credentials ");
+        System.out.println("2 . Add, Delete or Search a credential ");
+        System.out.println("3 . Exit Application");
+        int option = input.nextInt();
+        switch(option){
+            case 1:
+                for (String s:theDir.list()) {
+                    System.out.println(s);
+                }
+                break;
+            case 2:
+                businessFunctions(userName);
+                break;
+            case 3:
+                System.exit(0);
+        }
+    }
+
+    private static void businessFunctions(String userName) {
+
     }
 
 
