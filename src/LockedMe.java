@@ -137,8 +137,76 @@ public class LockedMe {
         }
     }
 
-    private static void businessFunctions(String userName) {
 
+    // Business functions ( case 2 of users)
+    private static void businessFunctions(String userName) {
+        Scanner sc= new Scanner(System.in);
+
+        int option2;
+        do{
+            System.out.println("****************************************************************");
+            System.out.println("  1. Create a file ");
+            System.out.println("  2. Search a file");
+            System.out.println("  3. Delete a file");
+            System.out.println("  4. Go to the main menu");
+            System.out.println("****************************************************************");
+
+            System.out.println("------------Enter a valid input------------");
+            option2 =sc.nextInt();
+
+            switch (option2){
+                case 1:
+                        createFile(userName);break;
+
+                case 2:
+
+                case 3:
+
+                case 4:
+                    break;
+                default:
+                    System.out.println("***************** Please enter a valid option *****************");
+            }
+
+        }while(option2<1 | option2>4);
+
+
+    }
+
+    private static void createFile(String userName) {
+
+        Scanner sc= new Scanner(System.in);
+
+        try {
+            System.out.println("Enter name of your credential");
+            String input = sc.next();
+            String path = "database\\"+userName+"\\"+input+".txt";
+            File theDir = new File(path);
+            //File file = new File("database\\"+userName+"\\"+input+".txt");
+            FileWriter fileWriter = null;
+
+            boolean flag = theDir.createNewFile();
+            if (flag) {
+
+                System.out.println("Credential file generated");
+
+                System.out.println("Enter username of credential");
+                String credUserName= sc.next();
+                System.out.println("Enter password of your credential");
+                String credPassword= sc.next();
+                fileWriter = new FileWriter(theDir,true);
+                fileWriter.write(credUserName);
+                fileWriter.write('\n');
+                fileWriter.write(credPassword);
+                System.out.println("Data has been written successfully..");
+                fileWriter.close();
+            } else {
+                System.out.println("This credential already exist");
+            }
+        } catch (IOException e) {
+            System.out.println("Exception Occurred:");
+            e.printStackTrace();
+        }
     }
 
 
