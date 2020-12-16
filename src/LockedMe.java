@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class LockedMe {
     public static void main(String[] args) {
+        welcomeScreen();
         Scanner input= new Scanner(System.in);
         System.out.println("1 . Registration ");
         System.out.println("2 . Login ");
@@ -25,6 +26,20 @@ public class LockedMe {
         }
     }
 
+    private static void welcomeScreen() {
+        System.out.println("==========================================");
+        System.out.println("*					*");
+        System.out.println("*   Welcome To LockMe.com		*");
+        System.out.println("*   Your Personal Digital Locker	*");
+        System.out.println("*   Developer - Ajay Bisht      *");
+        System.out.println("*   Locked me application keeps your credentials safe and secure *");
+        System.out.println("*					*");
+        System.out.println("==========================================");
+        System.out.println("Please read all the options carefully and provide input as required");
+        System.out.println();
+        System.out.println();
+    }
+
 
     // register
     public static void registerUser(){
@@ -35,10 +50,9 @@ public class LockedMe {
         String password=input.next();
 
 
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         try {
             File file = new File("users.txt");
-            fileWriter = new FileWriter("users.txt",true);
             Scanner scannerReader = new Scanner(file);
             boolean find=false;
             while(scannerReader.hasNextLine()) {
@@ -65,18 +79,11 @@ public class LockedMe {
                    System.out.println("Directory created");
                 }
                 System.out.println("Data has been written successfully..");
+                fileWriter.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
 
@@ -120,10 +127,13 @@ public class LockedMe {
         Scanner input= new Scanner(System.in);
         String path = "database\\"+userName;
         File theDir = new File(path);
-
+        System.out.println();
+        System.out.println("************************");
         System.out.println("1 . List all stored credentials ");
         System.out.println("2 . Add, Search/Read or Delete a credential ");
         System.out.println("3 . Exit Application");
+        System.out.println("************************");
+        System.out.println();
         int option = input.nextInt();
         switch(option){
             case 1:
@@ -157,6 +167,7 @@ public class LockedMe {
             System.out.println();
             System.out.println("------------Enter a valid input------------");
             option2 =sc.nextInt();
+            System.out.println();
 
             switch (option2){
                 case 1:
@@ -198,7 +209,9 @@ public class LockedMe {
         }
         if(found){
         File fileDelete = new File("database\\"+userName+"\\"+search);
-        fileDelete.delete();
+        boolean b=fileDelete.delete();
+
+        if(b)
             System.out.println("Credential "+search +" deleted" );
         }
         if (!found) {
@@ -264,7 +277,6 @@ public class LockedMe {
 
                                 System.out.println("Username - "+scannerReader.nextLine());
                                 System.out.println("Password - "+scannerReader.nextLine());
-
                         }catch (FileNotFoundException e){
                             e.printStackTrace();
                         }
